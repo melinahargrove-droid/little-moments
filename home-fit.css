@@ -11,7 +11,7 @@
   .capture-card::before{content:"✦";position:absolute;left:18px;top:24px;color:#d1aa67;font-size:14px;opacity:.48}
   .capture-card::after{content:"♡";position:absolute;right:20px;top:30px;color:#c8877b;font-size:17px;opacity:.42}
   .camera-polaroid{width:260px;height:166px;margin:-1px auto -1px;padding:0!important;border:0!important;background:none!important;box-shadow:none!important;transform:none;position:relative;overflow:visible!important;isolation:isolate}
-  .camera-polaroid::before{content:""!important;display:block!important;position:absolute;inset:-90px -130px;z-index:1;background-image:url('./lm%20camera.png')!important;background-repeat:no-repeat!important;background-position:calc(50% + var(--lm-camera-x,0px)) calc(50% + var(--lm-camera-y,0px))!important;background-size:var(--lm-camera-size,72%) auto!important;pointer-events:none}
+  .camera-polaroid::before{content:""!important;display:block!important;position:absolute;inset:-90px -130px;z-index:1;background-image:url('./lm%20camera.png')!important;background-repeat:no-repeat!important;background-position:50% calc(50% - 15px)!important;background-size:50.4% auto!important;pointer-events:none}
   .camera-polaroid::after{display:none!important;content:none!important}
   .camera-slot,.camera-glyph,.camera-polaroid>.tape,.camera-polaroid>.cap{display:none!important}
   .home-capture-title{font-size:22px;line-height:1.05;margin:0}
