@@ -1,0 +1,179 @@
+/* Home dashboard phone-fit refinements.
+   These selectors intentionally target only Home-specific components. */
+@media (max-width: 430px) {
+  .screen:has(.capture-card) {
+    padding-top: 10px;
+  }
+
+  .screen:has(.capture-card) .header {
+    min-height: 48px;
+  }
+
+  .screen:has(.capture-card) .header-title small {
+    font-size: 11px;
+    line-height: 1.05;
+  }
+
+  .screen:has(.capture-card) .header-title h2 {
+    font-size: 25px;
+    line-height: 1;
+  }
+
+  .screen:has(.capture-card) .icon-btn {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+  }
+
+  .capture-card {
+    margin-top: 8px;
+    padding: 10px 12px 11px;
+    border-radius: 20px;
+  }
+
+  .camera-polaroid {
+    width: 126px;
+    margin: 0 auto 7px;
+    padding: 6px 6px 29px;
+  }
+
+  .camera-slot {
+    height: 86px;
+  }
+
+  .camera-glyph {
+    transform: scale(.72);
+  }
+
+  .camera-polaroid .cap {
+    bottom: 7px;
+    font-size: 10px;
+    line-height: 1;
+  }
+
+  .camera-polaroid .tape {
+    width: 55px;
+    height: 16px;
+    top: -8px;
+  }
+
+  .home-capture-title {
+    font-size: 19px;
+    line-height: 1.05;
+  }
+
+  .home-copy {
+    font-size: 11px;
+    line-height: 1.25;
+    margin: 3px 0 7px;
+  }
+
+  .capture-card .primary {
+    min-height: 48px;
+    font-size: 15px;
+    padding: 8px 16px;
+  }
+
+  .grid2 {
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .home-tile {
+    min-height: 112px;
+    padding: 10px 10px 9px;
+    border-radius: 18px;
+  }
+
+  .tile-icon {
+    width: 40px;
+    height: 32px;
+    margin-bottom: 4px;
+    transform: scale(.82);
+    transform-origin: left top;
+  }
+
+  .home-tile h3 {
+    font-size: 17px;
+    line-height: 1.05;
+  }
+
+  .home-tile p {
+    font-size: 10.5px;
+    line-height: 1.25;
+    margin-top: 3px;
+    padding-right: 2px;
+  }
+
+  .tile-link {
+    right: 9px;
+    bottom: 7px;
+    font-size: 9px;
+  }
+
+  .recent-strip {
+    margin-top: 8px;
+    padding: 9px 10px;
+    border-radius: 18px;
+  }
+
+  .recent-head h3 {
+    font-size: 17px;
+    line-height: 1;
+  }
+
+  .recent-head small {
+    font-size: 10px;
+    line-height: 1.1;
+    margin-top: 2px;
+  }
+
+  .recent-strip .icon-btn {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  .empty-copy {
+    margin-top: 5px;
+    font-size: 10px;
+    line-height: 1.15;
+  }
+
+  .mini-row {
+    margin-top: 6px;
+    padding-bottom: 2px;
+  }
+
+  .mini-polaroid {
+    width: 67px;
+    flex-basis: 67px;
+    padding: 4px 4px 17px;
+  }
+
+  .mini-polaroid .mini-photo {
+    height: 46px;
+  }
+
+  .mini-polaroid > span {
+    font-size: 7px;
+    bottom: 3px;
+  }
+
+  /* Development-only year/roster status is not part of the finished Home UI. */
+  .screen:has(.capture-card) > .notice {
+    display: none;
+  }
+}
+
+/* Extra compression for shorter browser viewports such as Chrome with its bars visible. */
+@media (max-width: 430px) and (max-height: 760px) {
+  .camera-polaroid {
+    width: 112px;
+    padding-bottom: 26px;
+  }
+  .camera-slot { height: 72px; }
+  .home-copy { display: none; }
+  .home-tile { min-height: 104px; }
+  .recent-strip { padding-top: 7px; padding-bottom: 7px; }
+}
