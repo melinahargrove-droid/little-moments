@@ -1,8 +1,8 @@
-const LM_VERSION='0.19';
+const LM_VERSION='0.20';
 function ensureVersionBadge(){
-  const home=document.querySelector('.screen .capture-card');
+  const cover=document.querySelector('.cover');
   let badge=document.querySelector('.lm-version-badge');
-  if(!home){badge?.remove();return;}
+  if(!cover){badge?.remove();return;}
   if(!badge){
     badge=document.createElement('div');
     badge.className='lm-version-badge';
