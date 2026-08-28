@@ -21,7 +21,7 @@
   .home-tile{min-height:124px;padding:11px 11px 10px;border-radius:21px;background:rgba(255,253,248,.95);box-shadow:0 6px 18px rgba(74,59,42,.055);overflow:hidden;backdrop-filter:blur(1px)}
   .home-tile::after{content:"";position:absolute;width:50px;height:50px;border-radius:50%;right:-16px;top:-18px;background:rgba(202,124,112,.06);pointer-events:none}
   .tile-icon{width:64px;height:48px;margin-bottom:1px;transform:none;background-repeat:no-repeat!important;background-position:left center!important;background-size:contain!important}
-  .tile-icon.stack{background-image:url('./lm%20moments.png')!important}
+  .tile-icon.stack{width:112px;height:62px;margin:-5px 0 -5px -5px;background-image:url('./lm%20moments.png')!important;background-position:left center!important;background-size:contain!important}
   .tile-icon.book{background-image:url('./assets/home-portfolio.svg')!important}
   .tile-icon.stack span,.tile-icon.book::before,.tile-icon.book::after{display:none}
   .home-tile h3{font-size:18px;line-height:1.05}
@@ -51,6 +51,7 @@
   .home-copy{margin:4px 0 8px;font-size:11px}
   .grid2{margin-top:8px;gap:8px}
   .home-tile{min-height:114px;padding-top:9px}
+  .tile-icon.stack{width:104px;height:56px;margin:-5px 0 -4px -5px}
   .recent-strip{margin-top:8px;min-height:100px;padding-top:10px;padding-bottom:9px}
   .empty-moment-art{height:42px}
   .empty-copy{margin-top:0}
