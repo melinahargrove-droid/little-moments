@@ -1,0 +1,9 @@
+{
+  "name":"Little Moments",
+  "short_name":"Little Moments",
+  "start_url":"./",
+  "display":"standalone",
+  "background_color":"#fbf7ee",
+  "theme_color":"#fbf7ee",
+  "description":"A private classroom photo journal and multi-year student portfolio app."
+}
