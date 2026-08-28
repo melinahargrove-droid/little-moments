@@ -4,7 +4,7 @@ let state={...defaults};
 try{state={...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{}
 
 function apply(){
-  document.documentElement.style.setProperty('--lm-camera-zoom',`${state.zoom}%`);
+  document.documentElement.style.setProperty('--lm-camera-bg-size',`${(state.zoom*0.72).toFixed(2)}%`);
   document.documentElement.style.setProperty('--lm-camera-x',`${state.x}px`);
   document.documentElement.style.setProperty('--lm-camera-y',`${state.y}px`);
   const read=document.querySelector('.lm-edit-readout');
