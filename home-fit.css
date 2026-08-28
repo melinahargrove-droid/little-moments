@@ -20,8 +20,8 @@
   .grid2{gap:10px;margin-top:10px}
   .home-tile{min-height:124px;padding:11px 11px 10px;border-radius:21px;background:rgba(255,253,248,.95);box-shadow:0 6px 18px rgba(74,59,42,.055);overflow:hidden;backdrop-filter:blur(1px)}
   .home-tile::after{content:"";position:absolute;width:50px;height:50px;border-radius:50%;right:-16px;top:-18px;background:rgba(202,124,112,.06);pointer-events:none}
-  .tile-icon{width:52px;height:43px;margin-bottom:3px;transform:none;background-repeat:no-repeat!important;background-position:left center!important;background-size:contain!important}
-  .tile-icon.stack{background-image:url('./assets/home-moments.svg')!important}
+  .tile-icon{width:64px;height:48px;margin-bottom:1px;transform:none;background-repeat:no-repeat!important;background-position:left center!important;background-size:contain!important}
+  .tile-icon.stack{background-image:url('./lm%20moments.png')!important}
   .tile-icon.book{background-image:url('./assets/home-portfolio.svg')!important}
   .tile-icon.stack span,.tile-icon.book::before,.tile-icon.book::after{display:none}
   .home-tile h3{font-size:18px;line-height:1.05}
