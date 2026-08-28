@@ -1,10 +1,10 @@
-const KEY='littleMoments.cameraVisual.v1';
+const KEY='littleMoments.cameraVisual.v2';
 const defaults={zoom:100,x:0,y:0};
 let state={...defaults};
 try{state={...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{}
 
 function apply(){
-  document.documentElement.style.setProperty('--lm-camera-bg-size',`${(state.zoom*0.72).toFixed(2)}%`);
+  document.documentElement.style.setProperty('--lm-camera-size',`${(state.zoom*0.72).toFixed(2)}%`);
   document.documentElement.style.setProperty('--lm-camera-x',`${state.x}px`);
   document.documentElement.style.setProperty('--lm-camera-y',`${state.y}px`);
   const read=document.querySelector('.lm-edit-readout');
