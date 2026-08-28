@@ -1,6 +1,6 @@
 /* Little Moments Home — phone-first scrapbook polish */
 @media (max-width:430px){
-  .screen:has(.capture-card){padding-top:10px;padding-bottom:14px;position:relative;min-height:0!important;height:auto;background-image:linear-gradient(rgba(255,252,246,.12),rgba(255,252,246,.12)),url('./lm%20background.png');background-size:100% 100%;background-position:top center;background-repeat:no-repeat;background-color:#fbf6eb}
+  .screen:has(.capture-card){padding-top:10px;padding-bottom:16px;position:relative;min-height:calc(100dvh - 24px)!important;height:auto;background-image:linear-gradient(rgba(255,252,246,.12),rgba(255,252,246,.12)),url('./lm%20background.png');background-size:100% 100%;background-position:top center;background-repeat:no-repeat;background-color:#fbf6eb;display:flex;flex-direction:column}
   .screen:has(.capture-card)::before{display:none}
   .screen:has(.capture-card)>.header,.screen:has(.capture-card)>.capture-card,.screen:has(.capture-card)>.grid2,.screen:has(.capture-card)>.recent-strip{position:relative;z-index:1}
   .screen:has(.capture-card) .header{min-height:50px;margin-bottom:2px}
@@ -18,27 +18,27 @@
   .home-copy{font-size:11.5px;line-height:1.3;margin:5px 0 10px;color:#7a7167}
   .capture-card .primary{min-height:50px;font-size:15px;padding:9px 16px;background:linear-gradient(180deg,#d18478,#c8766b);box-shadow:0 5px 12px rgba(178,99,88,.16);border-color:#bd6e63}
   .grid2{gap:10px;margin-top:10px}
-  .home-tile{min-height:124px;padding:11px 11px 10px;border-radius:21px;background:rgba(255,253,248,.95);box-shadow:0 6px 18px rgba(74,59,42,.055);overflow:hidden;backdrop-filter:blur(1px)}
+  .home-tile{min-height:164px;padding:14px 12px 12px;border-radius:21px;background:rgba(255,253,248,.95);box-shadow:0 6px 18px rgba(74,59,42,.055);overflow:hidden;backdrop-filter:blur(1px);display:flex;flex-direction:column;justify-content:flex-end}
   .home-tile::after{content:"";position:absolute;width:50px;height:50px;border-radius:50%;right:-16px;top:-18px;background:rgba(202,124,112,.06);pointer-events:none}
-  .tile-icon{width:64px;height:48px;margin-bottom:1px;transform:none;background-repeat:no-repeat!important;background-position:left center!important;background-size:contain!important}
-  .tile-icon.stack{width:64px;height:54px;margin-bottom:0;background:none!important;position:relative;overflow:visible;isolation:isolate}
-  .tile-icon.stack::before{content:"";position:absolute;z-index:1;left:-8px;top:-26px;width:136px;height:86px;background:url('./lm%20moments.png') center/contain no-repeat;pointer-events:none}
-  .tile-icon.book{background-image:url('./assets/home-portfolio.svg')!important}
+  .tile-icon{position:absolute!important;left:12px;top:10px;width:96px;height:82px;margin:0!important;transform:none;background-repeat:no-repeat!important;background-position:left center!important;background-size:contain!important}
+  .tile-icon.stack{background:none!important;overflow:visible;isolation:isolate}
+  .tile-icon.stack::before{content:"";position:absolute;z-index:1;left:-8px;top:-13px;width:148px;height:104px;background:url('./lm%20moments.png') center/contain no-repeat;pointer-events:none}
+  .tile-icon.book{background-image:url('./assets/home-portfolio.svg')!important;background-size:72px auto!important}
   .tile-icon.stack span,.tile-icon.book::before,.tile-icon.book::after{display:none}
-  .home-tile h3{font-size:18px;line-height:1.05;position:relative;z-index:2}
-  .home-tile p{font-size:10.8px;line-height:1.28;margin-top:4px;padding-right:2px;color:#777066;position:relative;z-index:2}
+  .home-tile h3{font-size:18px;line-height:1.05;position:relative;z-index:2;margin-top:auto}
+  .home-tile p{font-size:10.8px;line-height:1.28;margin-top:4px;margin-bottom:13px;padding-right:2px;color:#777066;position:relative;z-index:2}
   .tile-link{right:10px;bottom:8px;font-size:9.5px;color:#b17469;z-index:2}
-  .recent-strip{margin-top:10px;padding:12px 13px 11px;border-radius:22px;background:rgba(247,241,233,.96);position:relative;overflow:hidden;min-height:112px;box-shadow:0 6px 18px rgba(74,59,42,.045);backdrop-filter:blur(1px)}
+  .recent-strip{margin-top:10px;padding:14px 13px 13px;border-radius:22px;background:rgba(247,241,233,.96);position:relative;overflow:hidden;min-height:166px;box-shadow:0 6px 18px rgba(74,59,42,.045);backdrop-filter:blur(1px);flex:1}
   .recent-strip::before{display:none}
   .recent-head{position:relative;z-index:1}
   .recent-head h3{font-size:18px;line-height:1}
   .recent-head small{font-size:10px;line-height:1.1;margin-top:3px;color:#8b7b70}
   .recent-strip .icon-btn{width:42px;height:42px;flex-basis:42px;background:rgba(255,253,248,.97)}
-  .empty-moment-art{height:48px;margin:4px 2px 0;background:url('./assets/home-empty-moments.svg') center/contain no-repeat;position:relative;z-index:1}
-  .empty-copy{position:relative;z-index:1;margin-top:2px;font-size:9.8px;line-height:1.15;color:#9a8275}
-  .mini-row{position:relative;z-index:1;margin-top:7px;padding-bottom:2px}
-  .mini-polaroid{width:72px;flex-basis:72px;padding:4px 4px 18px;box-shadow:0 4px 10px rgba(74,59,42,.08)}
-  .mini-polaroid .mini-photo{height:49px}
+  .empty-moment-art{height:72px;margin:9px 2px 0;background:url('./assets/home-empty-moments.svg') center/contain no-repeat;position:relative;z-index:1}
+  .empty-copy{position:relative;z-index:1;margin-top:4px;font-size:9.8px;line-height:1.15;color:#9a8275}
+  .mini-row{position:relative;z-index:1;margin-top:10px;padding-bottom:2px}
+  .mini-polaroid{width:82px;flex-basis:82px;padding:4px 4px 18px;box-shadow:0 4px 10px rgba(74,59,42,.08)}
+  .mini-polaroid .mini-photo{height:58px}
   .mini-polaroid>span{font-size:7px;bottom:3px}
   .screen:has(.capture-card)>.notice{display:none}
 }
@@ -51,10 +51,10 @@
   .home-capture-title{font-size:20px}
   .home-copy{margin:4px 0 8px;font-size:11px}
   .grid2{margin-top:8px;gap:8px}
-  .home-tile{min-height:114px;padding-top:9px}
-  .tile-icon.stack{height:50px}
-  .tile-icon.stack::before{left:-7px;top:-24px;width:128px;height:82px}
-  .recent-strip{margin-top:8px;min-height:100px;padding-top:10px;padding-bottom:9px}
-  .empty-moment-art{height:42px}
-  .empty-copy{margin-top:0}
+  .home-tile{min-height:145px;padding-top:12px}
+  .tile-icon{top:8px;height:72px}
+  .tile-icon.stack::before{left:-7px;top:-12px;width:136px;height:96px}
+  .recent-strip{margin-top:8px;min-height:142px;padding-top:12px;padding-bottom:10px}
+  .empty-moment-art{height:60px;margin-top:6px}
+  .empty-copy{margin-top:2px}
 }
