@@ -7,10 +7,10 @@
   .screen:has(.capture-card) .header-title small{font-size:11px;line-height:1;color:#9a7e72;letter-spacing:.02em}
   .screen:has(.capture-card) .header-title h2{font-size:27px;line-height:1;margin-top:2px;letter-spacing:-.02em}
   .screen:has(.capture-card) .icon-btn{width:44px;height:44px;flex-basis:44px;background:rgba(255,253,248,.97);box-shadow:0 5px 14px rgba(74,59,42,.06)}
-  .capture-card{margin-top:8px;padding:28px 14px 14px;border-radius:24px;background:rgba(255,253,248,.96);box-shadow:0 8px 24px rgba(74,59,42,.07);overflow:visible;backdrop-filter:blur(1px)}
-  .capture-card::before{content:"✦";position:absolute;left:18px;top:18px;color:#d1aa67;font-size:14px;opacity:.48}
-  .capture-card::after{content:"♡";position:absolute;right:20px;top:24px;color:#c8877b;font-size:17px;opacity:.42}
-  .camera-polaroid{width:260px;height:146px;margin:-11px auto -1px;padding:0!important;border:0!important;background:none!important;box-shadow:none!important;transform:none;position:relative;overflow:visible!important;isolation:isolate}
+  .capture-card{margin-top:8px;padding:18px 14px 14px;border-radius:24px;border:0;background:linear-gradient(to bottom,rgba(255,253,248,0) 0 82px,rgba(255,253,248,.68) 104px,rgba(255,253,248,.96) 126px);box-shadow:0 8px 24px rgba(74,59,42,.07);overflow:visible;backdrop-filter:none}
+  .capture-card::before{content:"✦";position:absolute;left:18px;top:24px;color:#d1aa67;font-size:14px;opacity:.48}
+  .capture-card::after{content:"♡";position:absolute;right:20px;top:30px;color:#c8877b;font-size:17px;opacity:.42}
+  .camera-polaroid{width:260px;height:166px;margin:-1px auto -1px;padding:0!important;border:0!important;background:none!important;box-shadow:none!important;transform:none;position:relative;overflow:visible!important;isolation:isolate}
   .camera-polaroid::before{content:""!important;display:block!important;position:absolute;inset:-90px -130px;z-index:1;background-image:url('./lm%20camera.png')!important;background-repeat:no-repeat!important;background-position:center!important;background-size:72% auto!important;pointer-events:none}
   .camera-polaroid::after{display:none!important;content:none!important}
   .camera-slot,.camera-glyph,.camera-polaroid>.tape,.camera-polaroid>.cap{display:none!important}
@@ -45,8 +45,8 @@
   .screen:has(.capture-card){padding-top:7px}
   .screen:has(.capture-card) .header{min-height:46px}
   .screen:has(.capture-card) .header-title h2{font-size:25px}
-  .capture-card{padding-top:26px;padding-bottom:11px}
-  .camera-polaroid{width:242px;height:134px;margin:-12px auto -2px}
+  .capture-card{padding-top:14px;padding-bottom:11px;background:linear-gradient(to bottom,rgba(255,253,248,0) 0 74px,rgba(255,253,248,.68) 94px,rgba(255,253,248,.96) 114px)}
+  .camera-polaroid{width:242px;height:154px;margin:-1px auto -2px}
   .home-capture-title{font-size:20px}
   .home-copy{margin:4px 0 8px;font-size:11px}
   .grid2{margin-top:8px;gap:8px}
