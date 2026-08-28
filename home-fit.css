@@ -20,10 +20,10 @@
   .grid2{gap:10px;margin-top:10px}
   .home-tile{min-height:164px;padding:14px 12px 12px;border-radius:21px;background:rgba(255,253,248,.95);box-shadow:0 6px 18px rgba(74,59,42,.055);overflow:hidden;backdrop-filter:blur(1px);display:flex;flex-direction:column;justify-content:flex-end}
   .home-tile::after{content:"";position:absolute;width:50px;height:50px;border-radius:50%;right:-16px;top:-18px;background:rgba(202,124,112,.06);pointer-events:none}
-  .tile-icon{position:absolute!important;left:10px;top:5px;width:118px;height:96px;margin:0!important;transform:none;background-repeat:no-repeat!important;background-position:left center!important;background-size:contain!important}
+  .tile-icon{position:absolute!important;left:10px;top:7px;width:110px;height:88px;margin:0!important;transform:none;background-repeat:no-repeat!important;background-position:left center!important;background-size:contain!important}
   .tile-icon.stack{background:none!important;overflow:visible;isolation:isolate}
-  .tile-icon.stack::before{content:"";position:absolute;z-index:1;left:-12px;top:-17px;width:174px;height:122px;background:url('./lm%20moments.png') center/contain no-repeat;pointer-events:none}
-  .tile-icon.book{background-image:url('./assets/home-portfolio.svg')!important;background-size:94px auto!important;background-position:left top!important}
+  .tile-icon.stack::before{content:"";position:absolute;z-index:1;left:-8px;top:-11px;width:148px;height:104px;background:url('./lm%20moments.png') center/contain no-repeat;pointer-events:none}
+  .tile-icon.book{left:11px!important;top:5px!important;width:128px!important;height:98px!important;background-image:url('./lm%20scrapbook.png')!important;background-size:contain!important;background-position:left center!important}
   .tile-icon.stack span,.tile-icon.book::before,.tile-icon.book::after{display:none}
   .home-tile h3{font-size:18px;line-height:1.05;position:relative;z-index:2;margin-top:auto}
   .home-tile p{font-size:10.8px;line-height:1.28;margin-top:4px;margin-bottom:13px;padding-right:2px;color:#777066;position:relative;z-index:2}
@@ -52,9 +52,9 @@
   .home-copy{margin:4px 0 8px;font-size:11px}
   .grid2{margin-top:8px;gap:8px}
   .home-tile{min-height:145px;padding-top:12px}
-  .tile-icon{left:10px;top:4px;width:108px;height:84px}
-  .tile-icon.stack::before{left:-10px;top:-15px;width:156px;height:110px}
-  .tile-icon.book{background-size:84px auto!important}
+  .tile-icon{left:9px;top:5px;width:100px;height:78px}
+  .tile-icon.stack::before{left:-7px;top:-10px;width:134px;height:94px}
+  .tile-icon.book{left:10px!important;top:4px!important;width:114px!important;height:88px!important;background-size:contain!important}
   .recent-strip{margin-top:8px;min-height:142px;padding-top:12px;padding-bottom:10px}
   .empty-moment-art{height:60px;margin-top:6px}
   .empty-copy{margin-top:2px}
