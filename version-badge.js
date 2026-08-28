@@ -3,7 +3,12 @@ function ensureVersionBadge(){
   const home=document.querySelector('.screen .capture-card');
   let badge=document.querySelector('.lm-version-badge');
   if(!home){badge?.remove();return;}
-  if(!badge){badge=document.createElement('div');badge.className='lm-version-badge';document.body.appendChild(badge);}
+  if(!badge){
+    badge=document.createElement('div');
+    badge.className='lm-version-badge';
+    Object.assign(badge.style,{position:'fixed',left:'8px',bottom:'8px',zIndex:'10001',font:'700 10px system-ui,sans-serif',color:'#6d6259',background:'rgba(255,250,242,.94)',border:'1px solid #d7c9b8',borderRadius:'999px',padding:'4px 7px',boxShadow:'0 3px 10px rgba(60,45,30,.08)'});
+    document.body.appendChild(badge);
+  }
   badge.textContent=`LM v${LM_VERSION}`;
 }
 new MutationObserver(ensureVersionBadge).observe(document.getElementById('app'),{childList:true,subtree:true});
