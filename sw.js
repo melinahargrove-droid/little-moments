@@ -1,4 +1,4 @@
-const CACHE='little-moments-v8';
+const CACHE='little-moments-v9';
 const ASSETS=['./','./index.html','./styles.css','./home-fit.css','./app.js','./db.js','./manifest.webmanifest','./lm%20background.png','./assets/home-camera.svg','./assets/home-moments.svg','./assets/home-portfolio.svg','./assets/home-botanical.svg','./assets/home-empty-moments.svg'];
 self.addEventListener('install',event=>{self.skipWaiting();event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)));});
 self.addEventListener('activate',event=>event.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))),self.clients.claim()])));
