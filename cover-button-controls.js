@@ -24,8 +24,8 @@ function showPanel(){
   document.body.appendChild(panel);
   panel.addEventListener('click',e=>{
     const a=e.target.closest('button')?.dataset.a;if(!a)return;
-    if(a==='smaller')state.scale=clamp(state.scale-5,50,150);
-    if(a==='larger')state.scale=clamp(state.scale+5,50,150);
+    if(a==='smaller')state.scale=clamp(state.scale-5,50,180);
+    if(a==='larger')state.scale=clamp(state.scale+5,50,180);
     if(a==='left')state.x=clamp(state.x-4,-100,100);
     if(a==='right')state.x=clamp(state.x+4,-100,100);
     if(a==='up')state.y=clamp(state.y-4,-100,100);
