@@ -1,4 +1,4 @@
-import {getAll,get,put,STORES} from './db.js';
+import {getAll,get,put,remove,STORES} from './db.js';
 const app=document.querySelector('#app');let urls=[];
 const esc=(v='')=>String(v).replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
 const obj=blob=>{const u=URL.createObjectURL(blob);urls.push(u);return u};
@@ -22,10 +22,19 @@ async function editMoment(m,preview=false,index=0,returnFn=null){
 }
 export async function showDetail(m,preview=false,index=0,returnFn=null){
   clear();const media=await mediaFor(m,index,preview),favorite=!!m.favorite;
-  app.innerHTML=`<section class="screen moments-screen detail-screen"><header class="header"><button class="icon-btn" id="detail-back">←</button><div class="header-title"><small>a page from our scrapbook</small><h2>Little Moment</h2></div><button class="icon-btn detail-heart ${favorite?'active':''}" id="detail-heart" aria-label="${favorite?'Remove from':'Add to'} favorites">${favorite?'♥':'♡'}</button></header><article class="detail-polaroid"><div class="detail-photo">${media}</div><div class="detail-date">${esc(dateText(m))}</div><h3>${esc(m.caption||'a little moment ♡')}</h3><p>${esc(m.note||m.story||'One of the little pieces of our year worth remembering. ♡')}</p><div class="detail-actions"><button class="detail-edit" id="detail-edit">✎ Edit Moment</button></div></article></section>`;
+  app.innerHTML=`<section class="screen moments-screen detail-screen"><header class="header"><button class="icon-btn" id="detail-back">←</button><div class="header-title"><small>a page from our scrapbook</small><h2>Little Moment</h2></div><button class="icon-btn detail-heart ${favorite?'active':''}" id="detail-heart" aria-label="${favorite?'Remove from':'Add to'} favorites">${favorite?'♥':'♡'}</button></header><article class="detail-polaroid"><div class="detail-photo">${media}</div><div class="detail-date">${esc(dateText(m))}</div><h3>${esc(m.caption||'a little moment ♡')}</h3><p>${esc(m.note||m.story||'One of the little pieces of our year worth remembering. ♡')}</p><div class="detail-actions"><button class="detail-edit" id="detail-edit">✎ Edit Moment</button>${preview?'':`<button class="detail-delete" id="detail-delete">Delete Moment</button>`}</div></article></section>`;
   app.querySelector('#detail-back').addEventListener('click',()=>returnFn?returnFn():openMoments(preview));
   app.querySelector('#detail-heart').addEventListener('click',async()=>{m.favorite=!m.favorite;const b=app.querySelector('#detail-heart');b.classList.toggle('active',m.favorite);b.textContent=m.favorite?'♥':'♡';b.setAttribute('aria-label',m.favorite?'Remove from favorites':'Add to favorites');if(!preview)await put(STORES.moments,m)});
   app.querySelector('#detail-edit').addEventListener('click',()=>editMoment(m,preview,index,returnFn));
+  app.querySelector('#detail-delete')?.addEventListener('click',async()=>{
+    const ok=confirm('Delete this Little Moment? This will remove it from Our Moments and every child portfolio. This cannot be undone.');
+    if(!ok)return;
+    const btn=app.querySelector('#detail-delete');btn.disabled=true;btn.textContent='Deleting…';
+    const photoId=m.photoId;
+    await remove(STORES.moments,m.id);
+    if(photoId)await remove(STORES.photos,photoId);
+    if(returnFn) returnFn(); else openMoments(false);
+  });
 }
 async function openMoments(forcePreview=false){
   clear();const [moments,years]=await Promise.all([getAll(STORES.moments),getAll(STORES.schoolYears)]);const year=currentYearFrom(years);let base=moments.filter(m=>!year||m.schoolYearId===year.id).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)),preview=false;
