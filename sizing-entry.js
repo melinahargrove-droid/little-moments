@@ -1,4 +1,7 @@
 (()=>{
+  const params=new URLSearchParams(location.search);
+  const sizingMode=params.get('sizing')==='1';
+
   function renderSizingHome(){
     const app=document.getElementById('app');
     if(!app) return;
@@ -17,16 +20,33 @@
     </section>`;
     try{window.scrollTo(0,0)}catch{}
   }
-  function wire(){
+
+  function makeCoverLink(){
     const button=document.getElementById('open-journal');
-    if(!button||button.dataset.sizingWired) return;
-    button.dataset.sizingWired='1';
-    button.addEventListener('click',event=>{
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      renderSizingHome();
-    },true);
+    if(!button||button.tagName==='A') return;
+    const link=document.createElement('a');
+    link.id='open-journal';
+    link.className=button.className;
+    link.href='./?sizing=1&v=033';
+    link.textContent='Open Our Journal';
+    link.setAttribute('role','button');
+    Object.assign(link.style,{display:'flex',alignItems:'center',justifyContent:'center',textDecoration:'none'});
+    button.replaceWith(link);
   }
-  new MutationObserver(wire).observe(document.getElementById('app'),{childList:true,subtree:true});
-  wire();
+
+  function sync(){
+    const app=document.getElementById('app');
+    if(!app) return;
+    if(sizingMode){
+      if(app.querySelector('.cover')) renderSizingHome();
+      return;
+    }
+    makeCoverLink();
+  }
+
+  const app=document.getElementById('app');
+  if(app){
+    new MutationObserver(sync).observe(app,{childList:true,subtree:true});
+    sync();
+  }
 })();
