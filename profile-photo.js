@@ -4,7 +4,7 @@ const app=document.querySelector('#app');
 let pendingPhoto=null;
 let pendingName='';
 
-function resizeImage(file,max=420,quality=.86){
+function resizeImage(file,size=640,quality=.86){
   return new Promise((resolve,reject)=>{
     const reader=new FileReader();
     reader.onerror=()=>reject(reader.error);
@@ -12,10 +12,10 @@ function resizeImage(file,max=420,quality=.86){
       const img=new Image();
       img.onerror=()=>reject(new Error('Could not read image'));
       img.onload=()=>{
-        const scale=Math.min(1,max/Math.max(img.width,img.height));
-        const w=Math.max(1,Math.round(img.width*scale)),h=Math.max(1,Math.round(img.height*scale));
-        const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
-        const ctx=canvas.getContext('2d');ctx.drawImage(img,0,0,w,h);
+        const side=Math.min(img.naturalWidth||img.width,img.naturalHeight||img.height);
+        const sx=((img.naturalWidth||img.width)-side)/2,sy=((img.naturalHeight||img.height)-side)/2;
+        const canvas=document.createElement('canvas');canvas.width=size;canvas.height=size;
+        const ctx=canvas.getContext('2d');ctx.drawImage(img,sx,sy,side,side,0,0,size,size);
         resolve(canvas.toDataURL('image/jpeg',quality));
       };
       img.src=reader.result;
