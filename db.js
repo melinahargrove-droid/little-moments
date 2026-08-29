@@ -11,6 +11,10 @@ export const STORES = {
   settings: 'settings'
 };
 
+function signalDataChange(store,operation){
+  try{window.dispatchEvent(new CustomEvent('lm:data-changed',{detail:{store,operation}}))}catch{}
+}
+
 export function openDB(){
   return new Promise((resolve,reject)=>{
     const request=indexedDB.open(DB_NAME,DB_VERSION);
@@ -49,7 +53,7 @@ export async function put(store,value){
   return new Promise((resolve,reject)=>{
     const tx=db.transaction(store,'readwrite');
     tx.objectStore(store).put(value);
-    tx.oncomplete=()=>resolve(value);
+    tx.oncomplete=()=>{signalDataChange(store,'put');resolve(value)};
     tx.onerror=()=>reject(tx.error);
   });
 }
@@ -59,7 +63,7 @@ export async function remove(store,key){
   return new Promise((resolve,reject)=>{
     const tx=db.transaction(store,'readwrite');
     tx.objectStore(store).delete(key);
-    tx.oncomplete=()=>resolve(key);
+    tx.oncomplete=()=>{signalDataChange(store,'remove');resolve(key)};
     tx.onerror=()=>reject(tx.error);
   });
 }
@@ -69,7 +73,7 @@ export async function clearStore(store){
   return new Promise((resolve,reject)=>{
     const tx=db.transaction(store,'readwrite');
     tx.objectStore(store).clear();
-    tx.oncomplete=()=>resolve();
+    tx.oncomplete=()=>{signalDataChange(store,'clear');resolve()};
     tx.onerror=()=>reject(tx.error);
   });
 }
