@@ -15,16 +15,21 @@ function decorateCaptureChoices(){
 
   // Keep the existing camera input and its existing change/save wiring intact.
   oldButton.style.display='none';
-  area.innerHTML=`<div class="capture-choice-intro"><strong>Add your photo</strong><small>How would you like to capture this Little Moment?</small></div><div class="capture-source-grid"><button type="button" class="capture-source-card camera-source" id="take-photo-choice"><span class="capture-source-art">📷</span><strong>Take a Photo</strong><small>capture it now</small></button><button type="button" class="capture-source-card gallery-source" id="choose-photo-choice"><span class="capture-source-art">▧</span><strong>Choose from Phone</strong><small>add one you already took</small></button></div>`;
+  area.innerHTML=`<div class="capture-choice-intro"><strong>Add your photo</strong><small>How would you like to capture this Little Moment?</small></div><div class="capture-source-grid"><button type="button" class="capture-source-card camera-source" id="take-photo-choice"><span class="capture-source-art">📷</span><strong>Take a Photo</strong><small>capture it now</small></button><button type="button" class="capture-source-card gallery-source" id="choose-photo-choice"><span class="capture-source-art">▧</span><strong>Choose from Phone</strong><small>choose one or several</small></button></div>`;
 
   const galleryInput=document.createElement('input');
-  galleryInput.type='file';galleryInput.accept='image/*';galleryInput.className='sr-only';galleryInput.id='capture-gallery-input';
+  galleryInput.type='file';galleryInput.accept='image/*';galleryInput.multiple=true;galleryInput.className='sr-only';galleryInput.id='capture-gallery-input';
   oldInput.insertAdjacentElement('afterend',galleryInput);
 
   screen.querySelector('#take-photo-choice').addEventListener('click',()=>oldInput.click());
   screen.querySelector('#choose-photo-choice').addEventListener('click',()=>galleryInput.click());
   galleryInput.addEventListener('change',()=>{
-    const file=galleryInput.files?.[0];if(!file)return;
+    const files=Array.from(galleryInput.files||[]);if(!files.length)return;
+    if(files.length>1 && typeof window.__littleMomentsStartBatch==='function'){
+      window.__littleMomentsStartBatch(files);
+      return;
+    }
+    const file=files[0];
     try{
       const dt=new DataTransfer();dt.items.add(file);oldInput.files=dt.files;oldInput.dispatchEvent(new Event('change',{bubbles:true}));
     }catch{
