@@ -22,8 +22,8 @@
   .home-tile::after{content:"";position:absolute;width:50px;height:50px;border-radius:50%;right:-16px;top:-18px;background:rgba(202,124,112,.06);pointer-events:none}
   .tile-icon{position:absolute!important;left:10px;top:7px;width:110px;height:88px;margin:0!important;transform:none;background-repeat:no-repeat!important;background-position:left center!important;background-size:contain!important}
   .tile-icon.stack{background:none!important;overflow:visible;isolation:isolate}
-  .tile-icon.stack::before{content:"";position:absolute;z-index:1;left:-1px;top:-15px;width:128px;height:90px;background:url('./lm%20moments.png') center/contain no-repeat;pointer-events:none;transform:translate(var(--moments-x,0px),var(--moments-y,0px)) scale(var(--moments-scale,1));transform-origin:top left}
-  .tile-icon.book{left:19px!important;top:-12px!important;width:108px!important;height:84px!important;background-image:url('./lm%20scrapbook.png')!important;background-size:contain!important;background-position:left top!important;transform:translate(var(--portfolio-x,0px),var(--portfolio-y,0px)) scale(var(--portfolio-scale,1))!important;transform-origin:top left!important}
+  .tile-icon.stack::before{content:"";position:absolute;z-index:1;left:-1px;top:-15px;width:128px;height:90px;background:url('./lm%20moments.png') center/contain no-repeat;pointer-events:none;transform:translate(24px,8px) scale(.9);transform-origin:top left}
+  .tile-icon.book{left:19px!important;top:-12px!important;width:108px!important;height:84px!important;background-image:url('./lm%20scrapbook.png')!important;background-size:contain!important;background-position:left top!important;transform:translate(28px,20px) scale(.9)!important;transform-origin:top left!important}
   .tile-icon.stack span,.tile-icon.book::before,.tile-icon.book::after{display:none}
   .home-tile h3{font-size:18px;line-height:1.05;position:relative;z-index:2;margin-top:auto}
   .home-tile p{font-size:10.8px;line-height:1.28;margin-top:4px;margin-bottom:13px;padding-right:2px;color:#777066;position:relative;z-index:2}
