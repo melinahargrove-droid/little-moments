@@ -4,23 +4,12 @@
   .cover{width:100%!important;max-width:430px!important;aspect-ratio:auto!important;min-height:100dvh!important;height:100dvh!important;margin:0 auto!important;padding:0!important;display:block!important;position:relative!important;text-align:center!important;background:#fbf7ee url('./lm%20landing%20page.png') top center/100% 100% no-repeat!important;overflow:hidden!important}
   .cover>div:first-child,.cover-stack,.cover .footline{display:none!important}
   .cover #open-journal{
-    position:absolute!important;
-    left:10.5%!important;
-    top:58.7%!important;
-    width:79%!important;
-    height:10.4%!important;
-    min-height:0!important;
-    margin:0!important;
-    padding:0!important;
-    border:0!important;
-    border-radius:0!important;
-    background:transparent url('./lm%20journal%20button.png') center/contain no-repeat!important;
-    box-shadow:none!important;
-    color:transparent!important;
-    font-size:0!important;
-    line-height:0!important;
-    z-index:3!important;
-    touch-action:manipulation;
+    position:absolute!important;left:10.5%!important;top:58.7%!important;width:79%!important;height:10.4%!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent url('./lm%20journal%20button.png') center/contain no-repeat!important;box-shadow:none!important;color:transparent!important;font-size:0!important;line-height:0!important;z-index:3!important;touch-action:manipulation;
+    transform:translate(var(--btn-x,0px),var(--btn-y,0px)) scale(var(--btn-scale,1));transform-origin:center!important;
   }
-  .cover #open-journal:active{transform:scale(.985)}
+  .cover #open-journal:active{filter:brightness(.97)}
+  #lm-cover-controls{position:fixed;left:10px;right:10px;bottom:10px;z-index:10002;background:rgba(255,251,244,.97);border:1px solid #d9c9b8;border-radius:16px;padding:9px;box-shadow:0 5px 18px rgba(70,52,38,.14);font-family:system-ui,sans-serif;color:#6b5f56}
+  #lm-cover-controls .lm-ctl-head{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:0 3px 7px}
+  #lm-cover-controls .lm-ctl-row{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+  #lm-cover-controls button{min-width:0;min-height:44px;padding:5px 2px;border:1px solid #d8c9ba;border-radius:11px;background:#fffaf3;color:#665b53;font:700 11px system-ui,sans-serif}
 }
