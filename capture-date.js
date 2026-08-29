@@ -1,0 +1,3 @@
+const app=document.querySelector('#app');
+function wireDate(){const screen=app.querySelector('.capture-screen');if(!screen||screen.dataset.dateReady==='1')return;const save=screen.querySelector('#save-moment');if(!save)return;screen.dataset.dateReady='1';const box=document.createElement('div');box.className='moment-date-box';const today=new Date().toISOString().slice(0,10);box.innerHTML=`<label for="moment-date"><span><strong>Moment date</strong><small>Change this when adding an older photo.</small></span><input id="moment-date" type="date" value="${today}"></label>`;const who=screen.querySelector('.capture-section');who?.insertAdjacentElement('beforebegin',box)}
+new MutationObserver(wireDate).observe(app,{childList:true,subtree:true});wireDate();
