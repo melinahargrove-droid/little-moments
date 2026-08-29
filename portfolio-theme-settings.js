@@ -2,7 +2,7 @@ const app=document.querySelector('#app');
 const PREF_KEY='lm-preferences-v1';
 const THEMES=[
   {id:'early-eagle',name:'Early Eagle Classic',note:'navy · watercolor · scrapbook',icon:'★',ready:true},
-  {id:'woodland-neutral',name:'Woodland Neutral',note:'coming next',icon:'❧',ready:false},
+  {id:'woodland-neutral',name:'Woodland Neutral',note:'sage · forest · nature journal',icon:'❧',ready:true},
   {id:'colorful-classroom',name:'Colorful Classroom',note:'planned theme',icon:'✦',ready:false},
   {id:'soft-botanical',name:'Soft Botanical',note:'planned theme',icon:'♡',ready:false}
 ];
