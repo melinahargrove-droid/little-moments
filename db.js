@@ -64,6 +64,16 @@ export async function remove(store,key){
   });
 }
 
+export async function clearStore(store){
+  const db=await openDB();
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction(store,'readwrite');
+    tx.objectStore(store).clear();
+    tx.oncomplete=()=>resolve();
+    tx.onerror=()=>reject(tx.error);
+  });
+}
+
 export async function getAll(store){
   const db=await openDB();
   return new Promise((resolve,reject)=>{
