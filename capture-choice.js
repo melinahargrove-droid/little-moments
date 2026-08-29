@@ -7,6 +7,15 @@ function decorateCaptureChoices(){
 
   const screen=app.querySelector('.capture-screen');
   if(!screen || screen.dataset.photoChoicesReady==='1') return;
+
+  // Batch screens are already populated by app.js with the current photo.
+  // Do not replace that photo with the source-choice UI again.
+  const batchNotice=screen.querySelector('.notice');
+  if(batchNotice && /Photo\s+\d+\s+of\s+\d+/i.test(batchNotice.textContent||'')){
+    screen.dataset.photoChoicesReady='1';
+    return;
+  }
+
   const oldInput=screen.querySelector('#capture-photo-input');
   const oldButton=screen.querySelector('#capture-photo-button');
   const area=screen.querySelector('#capture-photo-area');
