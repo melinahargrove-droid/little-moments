@@ -1,4 +1,4 @@
-const LM_VERSION='0.41';
+const LM_VERSION='0.42';
 function ensureVersionBadge(){
   const cover=document.querySelector('.cover');
   let badge=document.querySelector('.lm-version-badge');
