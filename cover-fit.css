@@ -1,14 +1,14 @@
 /* Little Moments opening cover — image-led layout */
 @media (max-width:430px){
   .app-shell:has(.cover){padding:0!important;background:#fbf7ee!important;overflow:hidden}
-  .cover{width:100%!important;max-width:430px!important;aspect-ratio:9/16!important;min-height:0!important;height:auto!important;margin:0 auto!important;padding:0!important;display:block!important;position:relative!important;text-align:center!important;background:#fbf7ee url('./lm%20landing%20page.png') top center/100% 100% no-repeat!important;overflow:hidden!important}
+  .cover{width:100%!important;max-width:430px!important;aspect-ratio:30/53!important;min-height:0!important;height:auto!important;margin:0 auto!important;padding:0!important;display:block!important;position:relative!important;text-align:center!important;background:#fbf7ee url('./lm%20landing%20page.png') top center/100% 100% no-repeat!important;overflow:hidden!important}
   .cover>div:first-child,.cover-stack,.cover .footline{display:none!important}
   .cover #open-journal{
     position:absolute!important;
     left:10.5%!important;
-    top:64.3%!important;
+    top:58.7%!important;
     width:79%!important;
-    height:12%!important;
+    height:10.4%!important;
     min-height:0!important;
     margin:0!important;
     padding:0!important;
