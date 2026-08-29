@@ -27,7 +27,7 @@
     const link=document.createElement('a');
     link.id='open-journal';
     link.className=button.className;
-    link.href='./?sizing=1&v=033';
+    link.href='./?sizing=1&v=034';
     link.textContent='Open Our Journal';
     link.setAttribute('role','button');
     Object.assign(link.style,{display:'flex',alignItems:'center',justifyContent:'center',textDecoration:'none'});
@@ -38,7 +38,7 @@
     const app=document.getElementById('app');
     if(!app) return;
     if(sizingMode){
-      if(app.querySelector('.cover')) renderSizingHome();
+      if(!app.querySelector('.screen:has(.capture-card)')) renderSizingHome();
       return;
     }
     makeCoverLink();
@@ -46,6 +46,7 @@
 
   const app=document.getElementById('app');
   if(app){
+    if(sizingMode) renderSizingHome();
     new MutationObserver(sync).observe(app,{childList:true,subtree:true});
     sync();
   }
