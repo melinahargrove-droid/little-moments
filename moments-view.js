@@ -8,7 +8,7 @@ function sample(kind=0){const scenes=[['#dfe8da','#c97d6e'],['#f0dfd0','#9eb49a'
 function dateText(m){return m.createdAt?new Date(m.createdAt).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}):''}
 async function mediaFor(m,index=0,preview=false){if(preview)return sample(index);const p=m.photoId?await get(STORES.photos,m.photoId):null;return p?.blob?`<img src="${obj(p.blob)}" alt="">`:sample(index)}
 async function cardFor(m,index,preview=false){const media=await mediaFor(m,index,preview);return `<button class="journal-polaroid" data-open-moment="${esc(m.id)}"><div class="journal-photo">${media}</div><div class="journal-date">${esc(dateText(m))}</div><div class="journal-caption">${esc(m.caption||'a little moment ♡')}</div></button>`}
-async function editMoment(m,preview=false,index=0,returnDetail=null){
+async function editMoment(m,preview=false,index=0,returnFn=null){
   clear();let roster=[];
   if(preview){roster=[{id:'preview-child-1',name:'Avery'},{id:'preview-child-2',name:'Miles'},{id:'preview-child-3',name:'Sofia'},{id:'preview-child-4',name:'Theo'}];if(!Array.isArray(m.studentIds)||!m.studentIds.length)m.studentIds=['preview-child-1','preview-child-2'];}
   else{const [students,enrollments]=await Promise.all([getAll(STORES.students),getAll(STORES.enrollments)]);const rosterIds=new Set(enrollments.filter(e=>e.schoolYearId===m.schoolYearId).map(e=>e.studentId));roster=students.filter(s=>rosterIds.has(s.id)).sort((a,b)=>a.name.localeCompare(b.name));}
@@ -17,15 +17,15 @@ async function editMoment(m,preview=false,index=0,returnDetail=null){
   const textarea=app.querySelector('#edit-story'),count=app.querySelector('#edit-count'),status=app.querySelector('#edit-status');
   function syncFriends(){app.querySelector('#edit-selected-count').textContent=`${selected.size} selected`;app.querySelectorAll('[data-student]').forEach(btn=>{const on=selected.has(btn.dataset.student);btn.classList.toggle('selected',on);btn.querySelector('span').textContent=on?'✓':'＋'})}
   textarea.addEventListener('input',()=>count.textContent=textarea.value.length);app.querySelectorAll('[data-student]').forEach(btn=>btn.addEventListener('click',()=>{const id=btn.dataset.student;if(selected.has(id))selected.delete(id);else selected.add(id);syncFriends()}));
-  app.querySelector('#edit-back').addEventListener('click',()=>showDetail(m,preview,index,returnDetail));
-  app.querySelector('#save-edit').addEventListener('click',async()=>{const nextStory=textarea.value.trim();if(!nextStory){status.textContent='Add a little story before saving ♡';textarea.focus();return}if(!selected.size){status.textContent='Choose at least one child in this moment ♡';return}const btn=app.querySelector('#save-edit');btn.disabled=true;btn.textContent='Saving…';m.caption=nextStory;m.studentIds=[...selected];m.updatedAt=new Date().toISOString();if(!preview)await put(STORES.moments,m);showDetail(m,preview,index,returnDetail)});
+  app.querySelector('#edit-back').addEventListener('click',()=>showDetail(m,preview,index,returnFn));
+  app.querySelector('#save-edit').addEventListener('click',async()=>{const nextStory=textarea.value.trim();if(!nextStory){status.textContent='Add a little story before saving ♡';textarea.focus();return}if(!selected.size){status.textContent='Choose at least one child in this moment ♡';return}const btn=app.querySelector('#save-edit');btn.disabled=true;btn.textContent='Saving…';m.caption=nextStory;m.studentIds=[...selected];m.updatedAt=new Date().toISOString();if(!preview)await put(STORES.moments,m);showDetail(m,preview,index,returnFn)});
 }
-async function showDetail(m,preview=false,index=0,returnDetail=null){
+export async function showDetail(m,preview=false,index=0,returnFn=null){
   clear();const media=await mediaFor(m,index,preview),favorite=!!m.favorite;
   app.innerHTML=`<section class="screen moments-screen detail-screen"><header class="header"><button class="icon-btn" id="detail-back">←</button><div class="header-title"><small>a page from our scrapbook</small><h2>Little Moment</h2></div><button class="icon-btn detail-heart ${favorite?'active':''}" id="detail-heart" aria-label="${favorite?'Remove from':'Add to'} favorites">${favorite?'♥':'♡'}</button></header><article class="detail-polaroid"><div class="detail-photo">${media}</div><div class="detail-date">${esc(dateText(m))}</div><h3>${esc(m.caption||'a little moment ♡')}</h3><p>${esc(m.note||m.story||'One of the little pieces of our year worth remembering. ♡')}</p><div class="detail-actions"><button class="detail-edit" id="detail-edit">✎ Edit Moment</button></div></article></section>`;
-  app.querySelector('#detail-back').addEventListener('click',()=>returnDetail?document.dispatchEvent(new CustomEvent('lm:return-portfolio',{detail:returnDetail})):openMoments(preview));
+  app.querySelector('#detail-back').addEventListener('click',()=>returnFn?returnFn():openMoments(preview));
   app.querySelector('#detail-heart').addEventListener('click',async()=>{m.favorite=!m.favorite;const b=app.querySelector('#detail-heart');b.classList.toggle('active',m.favorite);b.textContent=m.favorite?'♥':'♡';b.setAttribute('aria-label',m.favorite?'Remove from favorites':'Add to favorites');if(!preview)await put(STORES.moments,m)});
-  app.querySelector('#detail-edit').addEventListener('click',()=>editMoment(m,preview,index,returnDetail));
+  app.querySelector('#detail-edit').addEventListener('click',()=>editMoment(m,preview,index,returnFn));
 }
 async function openMoments(forcePreview=false){
   clear();const [moments,years]=await Promise.all([getAll(STORES.moments),getAll(STORES.schoolYears)]);const year=currentYearFrom(years);let base=moments.filter(m=>!year||m.schoolYearId===year.id).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)),preview=false;
@@ -36,5 +36,4 @@ async function openMoments(forcePreview=false){
   function selectFilter(name){app.querySelectorAll('.moment-filter').forEach(b=>b.classList.toggle('active',b.dataset.filter===name));renderFilter(name)}
   app.querySelector('#moments-back').addEventListener('click',()=>location.reload());app.querySelector('#header-favorites').addEventListener('click',()=>selectFilter('favorites'));app.querySelectorAll('.moment-filter').forEach(b=>b.addEventListener('click',()=>selectFilter(b.dataset.filter)));renderFilter('all');
 }
-document.addEventListener('lm:open-moment',e=>{const d=e.detail||{};if(d.moment)showDetail(d.moment,!!d.preview,d.index||0,d.returnDetail||null)});
 document.addEventListener('click',e=>{const trigger=e.target.closest('#moments,#see-all');if(!trigger)return;e.preventDefault();e.stopImmediatePropagation();openMoments(false)},true);
