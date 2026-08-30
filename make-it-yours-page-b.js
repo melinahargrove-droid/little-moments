@@ -1,0 +1,3 @@
+const app=document.querySelector('#app');
+function installPageB(){app.querySelectorAll('.print-grid-page.theme-make-it-yours.bg-B').forEach(page=>{if(page.dataset.miyPageB==='1')return;page.dataset.miyPageB='1';const main=document.createElement('img');main.className='miy-page-main';main.src='./Page_B_Red_Main.png?v=161';main.alt='';main.setAttribute('aria-hidden','true');const accent=document.createElement('img');accent.className='miy-page-accent';accent.src='./Page_B_Black_Accent.png?v=161';accent.alt='';accent.setAttribute('aria-hidden','true');page.prepend(accent);page.prepend(main)})}
+new MutationObserver(installPageB).observe(app,{childList:true,subtree:true});installPageB();
