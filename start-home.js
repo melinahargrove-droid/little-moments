@@ -6,6 +6,10 @@ document.head.appendChild(style);
 function skipCover(){
   const btn=document.querySelector('#open-journal');
   if(!btn)return false;
+  const handler=btn.onclick;
+  if(typeof handler==='function'){
+    window.__lmGoHome=()=>handler.call(btn,new Event('click'));
+  }
   btn.click();
   style.remove();
   return true;
