@@ -78,6 +78,35 @@ export async function clearStore(store){
   });
 }
 
+export async function replaceAllStoresAtomic(rowsByStore){
+  const db=await openDB();
+  const storeNames=Object.values(STORES);
+  return new Promise((resolve,reject)=>{
+    let settled=false;
+    let tx;
+    try{
+      tx=db.transaction(storeNames,'readwrite');
+      for(const name of storeNames){
+        const store=tx.objectStore(name);
+        store.clear();
+        const rows=Array.isArray(rowsByStore?.[name])?rowsByStore[name]:[];
+        for(const row of rows) store.put(row);
+      }
+    }catch(err){
+      try{tx?.abort()}catch{}
+      reject(err);
+      return;
+    }
+    tx.oncomplete=()=>{
+      if(settled)return;settled=true;
+      for(const name of storeNames)signalDataChange(name,'atomic-restore');
+      resolve();
+    };
+    tx.onabort=()=>{if(settled)return;settled=true;reject(tx.error||new Error('Restore transaction was aborted. No database changes were committed.'))};
+    tx.onerror=()=>{};
+  });
+}
+
 export async function getAll(store){
   const db=await openDB();
   return new Promise((resolve,reject)=>{
