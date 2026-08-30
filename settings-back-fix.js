@@ -1,1 +1,1 @@
-document.addEventListener('click',e=>{const btn=e.target.closest('#settings-back');if(!btn)return;e.preventDefault();e.stopImmediatePropagation();if(typeof window.__lmGoHome==='function'){window.__lmGoHome();return}location.reload()},true);
+document.addEventListener('click',e=>{const btn=e.target.closest('#settings-back');if(!btn)return;e.preventDefault();e.stopImmediatePropagation();const url=new URL('./',window.location.href);url.searchParams.set('v','163');url.searchParams.set('home',Date.now().toString());window.location.replace(url.toString())},true);
