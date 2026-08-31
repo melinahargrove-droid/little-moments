@@ -13,6 +13,7 @@ export const STORES = {
 };
 
 function audit(entry){try{const old=JSON.parse(localStorage.getItem(AUDIT_KEY)||'[]');old.unshift({...entry,at:new Date().toISOString(),stack:(new Error()).stack||''});localStorage.setItem(AUDIT_KEY,JSON.stringify(old.slice(0,20)))}catch{}}
+function emitChange(detail={}){try{window.dispatchEvent(new CustomEvent('lm:data-changed',{detail:{...detail,at:new Date().toISOString()}}))}catch{}}
 function classroomCount(c={}){return Number(c.students||0)+Number(c.moments||0)+Number(c.photos||0)+Number(c.enrollments||0)}
 function rowsCounts(rows={}){return{students:Array.isArray(rows.students)?rows.students.length:0,moments:Array.isArray(rows.moments)?rows.moments.length:0,photos:Array.isArray(rows.photos)?rows.photos.length:0,enrollments:Array.isArray(rows.enrollments)?rows.enrollments.length:0,years:Array.isArray(rows.schoolYears)?rows.schoolYears.length:0}}
 async function liveCounts(){const [students,moments,photos,enrollments,years]=await Promise.all([getAll(STORES.students),getAll(STORES.moments),getAll(STORES.photos),getAll(STORES.enrollments),getAll(STORES.schoolYears)]);return{students:students.length,moments:moments.length,photos:photos.length,enrollments:enrollments.length,years:years.length}}
@@ -35,10 +36,10 @@ export function openDB(){
   });
 }
 
-export async function put(store,value){const db=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction(store,'readwrite');tx.objectStore(store).put(value);tx.oncomplete=()=>resolve(value);tx.onerror=()=>reject(tx.error)})}
-export async function remove(store,key){const db=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction(store,'readwrite');tx.objectStore(store).delete(key);tx.oncomplete=()=>resolve(key);tx.onerror=()=>reject(tx.error)})}
+export async function put(store,value){const db=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction(store,'readwrite');tx.objectStore(store).put(value);tx.oncomplete=()=>{emitChange({operation:'put',store,key:value?.id??value?.key??null});resolve(value)};tx.onerror=()=>reject(tx.error)})}
+export async function remove(store,key){const db=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction(store,'readwrite');tx.objectStore(store).delete(key);tx.oncomplete=()=>{emitChange({operation:'remove',store,key});resolve(key)};tx.onerror=()=>reject(tx.error)})}
 
-export async function clearStore(store){const before=await liveCounts().catch(()=>null);audit({operation:'clearStore',store,before});const db=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction(store,'readwrite');tx.objectStore(store).clear();tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error)})}
+export async function clearStore(store){const before=await liveCounts().catch(()=>null);audit({operation:'clearStore',store,before});const db=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction(store,'readwrite');tx.objectStore(store).clear();tx.oncomplete=()=>{emitChange({operation:'clearStore',store});resolve()};tx.onerror=()=>reject(tx.error)})}
 
 export async function replaceAllStoresAtomic(rowsByStore,meta={}){
   const before=await liveCounts().catch(()=>({}));
@@ -47,7 +48,7 @@ export async function replaceAllStoresAtomic(rowsByStore,meta={}){
   audit({operation:'replaceAllStoresAtomic-attempt',reason,before,incoming});
   if(classroomCount(before)>0&&classroomCount(incoming)===0){audit({operation:'replaceAllStoresAtomic-BLOCKED',reason,before,incoming});throw new Error('Little Moments blocked an empty database replacement to protect your classroom data.')}
   const db=await openDB(),storeNames=Object.values(STORES);
-  return new Promise((resolve,reject)=>{let settled=false,tx;try{tx=db.transaction(storeNames,'readwrite');for(const name of storeNames){const store=tx.objectStore(name);store.clear();const rows=Array.isArray(rowsByStore?.[name])?rowsByStore[name]:[];for(const row of rows)store.put(row)}}catch(err){try{tx?.abort()}catch{}reject(err);return}tx.oncomplete=()=>{if(settled)return;settled=true;audit({operation:'replaceAllStoresAtomic-complete',reason,before,incoming});resolve()};tx.onabort=()=>{if(settled)return;settled=true;audit({operation:'replaceAllStoresAtomic-abort',reason,before,incoming});reject(tx.error||new Error('Restore transaction was aborted. No database changes were committed.'))};tx.onerror=()=>{}})
+  return new Promise((resolve,reject)=>{let settled=false,tx;try{tx=db.transaction(storeNames,'readwrite');for(const name of storeNames){const store=tx.objectStore(name);store.clear();const rows=Array.isArray(rowsByStore?.[name])?rowsByStore[name]:[];for(const row of rows)store.put(row)}}catch(err){try{tx?.abort()}catch{}reject(err);return}tx.oncomplete=()=>{if(settled)return;settled=true;audit({operation:'replaceAllStoresAtomic-complete',reason,before,incoming});emitChange({operation:'atomic-restore',reason,counts:incoming});resolve()};tx.onabort=()=>{if(settled)return;settled=true;audit({operation:'replaceAllStoresAtomic-abort',reason,before,incoming});reject(tx.error||new Error('Restore transaction was aborted. No database changes were committed.'))};tx.onerror=()=>{}})
 }
 
 export async function getAll(store){const db=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction(store,'readonly');const req=tx.objectStore(store).getAll();req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
