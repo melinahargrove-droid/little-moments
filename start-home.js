@@ -1,4 +1,5 @@
 const app=document.querySelector('#app');
+const coverStyle=document.createElement('style');coverStyle.textContent='.cover{display:none!important}';document.head.appendChild(coverStyle);
 function skipCover(){
   const btn=document.querySelector('#open-journal');
   if(!btn||typeof btn.onclick!=='function')return false;
