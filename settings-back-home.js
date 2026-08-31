@@ -1,0 +1,1 @@
+document.addEventListener('click',e=>{const btn=e.target.closest('#settings-back');if(!btn)return;e.preventDefault();e.stopImmediatePropagation();if(typeof window.__lmGoHome==='function'){window.__lmGoHome();return}location.reload()},true);
