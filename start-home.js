@@ -3,7 +3,7 @@ function skipCover(){
   const btn=document.querySelector('#open-journal');
   if(!btn||typeof btn.onclick!=='function')return false;
   const handler=btn.onclick;
-  window.__lmGoHome=()=>handler.call(btn,new Event('click'));
+  window.__lmGoHome=()=>handler();
   btn.click();
   return true;
 }
