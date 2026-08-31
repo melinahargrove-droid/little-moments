@@ -1,1 +1,0 @@
-document.addEventListener('click',e=>{const btn=e.target.closest('#settings-back');if(!btn)return;e.preventDefault();e.stopImmediatePropagation();btn.disabled=true;btn.setAttribute('aria-busy','true');setTimeout(()=>{if(typeof window.__lmGoHome==='function'){window.__lmGoHome()}else{btn.disabled=false;btn.removeAttribute('aria-busy')}},0)},true);
