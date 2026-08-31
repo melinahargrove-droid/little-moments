@@ -1,20 +1,14 @@
 const app=document.querySelector('#app');
-const style=document.createElement('style');
-style.id='lm-skip-cover-style';
-style.textContent='.cover{display:none!important}';
-document.head.appendChild(style);
 function skipCover(){
   const btn=document.querySelector('#open-journal');
-  if(!btn)return false;
+  if(!btn||typeof btn.onclick!=='function')return false;
   const handler=btn.onclick;
-  if(typeof handler==='function'){
-    window.__lmGoHome=()=>handler.call(btn,new Event('click'));
-  }
+  window.__lmGoHome=()=>handler.call(btn,new Event('click'));
   btn.click();
-  style.remove();
   return true;
 }
 if(!skipCover()){
   const obs=new MutationObserver(()=>{if(skipCover())obs.disconnect()});
   obs.observe(app,{childList:true,subtree:true});
+  setTimeout(()=>obs.disconnect(),10000);
 }
