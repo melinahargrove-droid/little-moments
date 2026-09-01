@@ -7,6 +7,7 @@ const RESTORE_FLAG='lm-restore-in-progress';
 const defaultPrefs={keepFriendsPrompt:true,showRecent:true,confirmDelete:true};
 let settingsReturn={route:'home',scrollY:0,moment:null};
 let suppressNextPop=false;
+let closingSettings=false;
 
 function prefs(){try{return {...defaultPrefs,...JSON.parse(localStorage.getItem(PREF_KEY)||'{}')}}catch{return {...defaultPrefs}}}
 function savePrefs(p){localStorage.setItem(PREF_KEY,JSON.stringify(p))}
@@ -27,12 +28,18 @@ async function renderReturnTarget(target=settingsReturn){
   requestAnimationFrame(()=>scrollTo({top:target.scrollY||0,behavior:'instant'}));
 }
 async function closeSettings(){
+  if(closingSettings)return;
+  closingSettings=true;
   const target={...settingsReturn};
-  if(history.state?.lmSettings===true){
-    suppressNextPop=true;
-    history.back();
+  try{
+    await renderReturnTarget(target);
+    if(history.state?.lmSettings===true){
+      suppressNextPop=true;
+      history.back();
+    }
+  }finally{
+    setTimeout(()=>{closingSettings=false},0);
   }
-  await renderReturnTarget(target);
 }
 
 function blobToDataURL(blob){return new Promise((resolve,reject)=>{const r=new FileReader();r.onerror=()=>reject(r.error);r.onload=()=>resolve(r.result);r.readAsDataURL(blob)})}
@@ -54,9 +61,8 @@ async function loadStorage(){const s=await storageStats(),usage=app.querySelecto
 function openSettings(autoRestore=false,options={}){
   if(!options.fromHistory)settingsReturn=detectReturnRoute();
   const p=prefs();
-  app.innerHTML=`<section class="screen settings-screen"><header class="header"><button class="icon-btn" id="settings-back">←</button><div class="header-title"><small>Little Moments</small><h2>Settings &amp;<br>Data Safety</h2></div><span style="width:44px" aria-hidden="true"></span></header><div class="settings-intro">make Little Moments fit your classroom, then keep every memory safe ♡</div><div class="settings-list"><section class="settings-card class-settings-card"><div class="settings-card-head"><div class="settings-card-icon">👥</div><div><h3>Class &amp; Students</h3><p>Add students, update profile photos, and manage your current class.</p></div></div><button class="secondary compact class-settings-button" id="open-class-setup">Manage Class &amp; Students</button><div class="settings-status"><span>This is the permanent place to manage your roster.</span><span class="settings-pill">Class</span></div></section><section class="settings-card preferences-card" id="preferences-card"><div class="settings-card-head"><div class="settings-card-icon">✦</div><div><h3>Preferences</h3><p>Small choices that make capturing and revisiting your Little Moments easier.</p></div></div><div class="preference-list"><label><span><strong>Keep-friends prompt</strong><small>Ask whether to keep the same children after Capture Another.</small></span><input type="checkbox" data-pref="keepFriendsPrompt" ${p.keepFriendsPrompt?'checked':''}><i></i></label><label><span><strong>Recent Moments preview</strong><small>Show your latest saved moments on the home page.</small></span><input type="checkbox" data-pref="showRecent" ${p.showRecent?'checked':''}><i></i></label><label><span><strong>Confirm before deleting</strong><small>Ask before permanently removing a Little Moment.</small></span><input type="checkbox" data-pref="confirmDelete" ${p.confirmDelete?'checked':''}><i></i></label></div><div class="settings-status"><span id="preference-status">Your choices save automatically.</span><span class="settings-pill">Saved</span></div></section><section class="settings-card"><div class="settings-card-head"><div class="settings-card-icon">↥</div><div><h3>Backup &amp; Restore</h3><p>Create a safe copy of your class, moments, photos, and portfolios for another device or school year.</p></div></div><div class="backup-actions"><button class="primary compact" id="create-backup">Create Backup</button><button class="secondary compact" id="restore-backup">Restore Backup</button><input id="restore-file" class="sr-only" type="file" accept="application/json,.json"></div><div class="settings-status"><span id="backup-status">Your backup includes photos and student profiles.</span><span class="settings-pill">Ready</span></div></section><section class="settings-card storage-card" id="storage-card" role="button" tabindex="0" aria-expanded="false"><div class="settings-card-head"><div class="settings-card-icon">▣</div><div><h3>Storage</h3><p>See how much space your saved photos and Little Moments are using.</p></div></div><div class="settings-status"><span id="storage-summary">Tap to calculate storage details.</span><span class="settings-pill" id="storage-pill">Details</span></div><div class="storage-details hidden" id="storage-details"></div><div class="storage-tap-hint">Tap for details⌄</div></section><section class="settings-card privacy-card"><div class="settings-card-head"><div class="settings-card-icon">♡</div><div><h3>Privacy</h3><p>Little Moments keeps classroom information inside this app on your device.</p></div></div><div class="settings-status"><span>Your classroom memories stay private.</span><span class="settings-pill">Local</span></div></section></div><div class="settings-note">Your students, school years, and saved Little Moments stay connected unless you deliberately change or remove them. ♡</div></section>`;
+  app.innerHTML=`<section class="screen settings-screen"><header class="header"><button type="button" class="icon-btn" id="settings-back" aria-label="Back">←</button><div class="header-title"><small>Little Moments</small><h2>Settings &amp;<br>Data Safety</h2></div><span style="width:44px" aria-hidden="true"></span></header><div class="settings-intro">make Little Moments fit your classroom, then keep every memory safe ♡</div><div class="settings-list"><section class="settings-card class-settings-card"><div class="settings-card-head"><div class="settings-card-icon">👥</div><div><h3>Class &amp; Students</h3><p>Add students, update profile photos, and manage your current class.</p></div></div><button class="secondary compact class-settings-button" id="open-class-setup">Manage Class &amp; Students</button><div class="settings-status"><span>This is the permanent place to manage your roster.</span><span class="settings-pill">Class</span></div></section><section class="settings-card preferences-card" id="preferences-card"><div class="settings-card-head"><div class="settings-card-icon">✦</div><div><h3>Preferences</h3><p>Small choices that make capturing and revisiting your Little Moments easier.</p></div></div><div class="preference-list"><label><span><strong>Keep-friends prompt</strong><small>Ask whether to keep the same children after Capture Another.</small></span><input type="checkbox" data-pref="keepFriendsPrompt" ${p.keepFriendsPrompt?'checked':''}><i></i></label><label><span><strong>Recent Moments preview</strong><small>Show your latest saved moments on the home page.</small></span><input type="checkbox" data-pref="showRecent" ${p.showRecent?'checked':''}><i></i></label><label><span><strong>Confirm before deleting</strong><small>Ask before permanently removing a Little Moment.</small></span><input type="checkbox" data-pref="confirmDelete" ${p.confirmDelete?'checked':''}><i></i></label></div><div class="settings-status"><span id="preference-status">Your choices save automatically.</span><span class="settings-pill">Saved</span></div></section><section class="settings-card"><div class="settings-card-head"><div class="settings-card-icon">↥</div><div><h3>Backup &amp; Restore</h3><p>Create a safe copy of your class, moments, photos, and portfolios for another device or school year.</p></div></div><div class="backup-actions"><button class="primary compact" id="create-backup">Create Backup</button><button class="secondary compact" id="restore-backup">Restore Backup</button><input id="restore-file" class="sr-only" type="file" accept="application/json,.json"></div><div class="settings-status"><span id="backup-status">Your backup includes photos and student profiles.</span><span class="settings-pill">Ready</span></div></section><section class="settings-card storage-card" id="storage-card" role="button" tabindex="0" aria-expanded="false"><div class="settings-card-head"><div class="settings-card-icon">▣</div><div><h3>Storage</h3><p>See how much space your saved photos and Little Moments are using.</p></div></div><div class="settings-status"><span id="storage-summary">Tap to calculate storage details.</span><span class="settings-pill" id="storage-pill">Details</span></div><div class="storage-details hidden" id="storage-details"></div><div class="storage-tap-hint">Tap for details⌄</div></section><section class="settings-card privacy-card"><div class="settings-card-head"><div class="settings-card-icon">♡</div><div><h3>Privacy</h3><p>Little Moments keeps classroom information inside this app on your device.</p></div></div><div class="settings-status"><span>Your classroom memories stay private.</span><span class="settings-pill">Local</span></div></section></div><div class="settings-note">Your students, school years, and saved Little Moments stay connected unless you deliberately change or remove them. ♡</div></section>`;
   if(!options.fromHistory&&history.state?.lmSettings!==true)history.pushState({lmSettings:true},'');
-  app.querySelector('#settings-back').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();closeSettings()});
   const status=app.querySelector('#backup-status'),fileInput=app.querySelector('#restore-file'),storageCard=app.querySelector('#storage-card'),storageDetails=app.querySelector('#storage-details'),hint=storageCard.querySelector('.storage-tap-hint');
   app.querySelector('#open-class-setup').addEventListener('click',()=>window.__lmOpenClassSetup?.());
   app.querySelector('#create-backup').addEventListener('click',()=>downloadBackup(status));
@@ -71,7 +77,20 @@ function openSettings(autoRestore=false,options={}){
   if(autoRestore)setTimeout(()=>fileInput.click(),120);
 }
 
-document.addEventListener('click',e=>{const btn=e.target.closest('#settings,#teacher-tools');if(!btn)return;e.preventDefault();e.stopImmediatePropagation();openSettings()},true);
+document.addEventListener('click',e=>{
+  const back=e.target.closest?.('#settings-back');
+  if(back){
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    closeSettings();
+    return;
+  }
+  const btn=e.target.closest?.('#settings,#teacher-tools');
+  if(!btn)return;
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  openSettings();
+},true);
 window.addEventListener('lm:open-settings-for-restore',()=>openSettings(true));
 window.addEventListener('lm:open-settings',()=>openSettings(false));
 window.addEventListener('popstate',()=>{
