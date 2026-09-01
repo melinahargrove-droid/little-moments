@@ -3,6 +3,7 @@ const app=document.querySelector('#app');const esc=(v='')=>String(v).replace(/[&
 'early-eagle':{name:'Early Eagle Classic',cover:'early-eagle-cover',page:'early-eagle-bg',coverImage:'Early_Eagle_Classic_Cover.png',pageImage:bg=>`Early_Eagle_Classic_Background_${bg}.png`,schoolName:false},
 'woodland-neutral':{name:'Woodland Neutral',cover:'woodland-neutral-cover',page:'woodland-neutral-bg',coverImage:'Woodland_Neutral_Cover.png',pageImage:bg=>`Woodland_Neutral_Background_${bg}.png`,schoolName:true},
 'colorful-classroom':{name:'Colorful Classroom',cover:'colorful-classroom-cover',page:'colorful-classroom-bg',coverImage:'Colorful_Classroom_Cover.png',pageImage:bg=>`Colorful_Classroom_Background_${bg}.png`,schoolName:true},
+'soft-botanical':{name:'Soft Botanical',cover:'soft-botanical-cover',page:'soft-botanical-bg',coverImage:'Soft_Botanical_Portfolio_Cover_8.5x11_300dpi.png',pageImage:bg=>`Soft_Botanical_Page_${bg}_8.5x11_300dpi.png`,schoolName:true},
 'make-it-yours':{name:'Make It Yours',cover:'make-it-yours-cover',page:'make-it-yours-bg',coverImage:null,pageImage:null,schoolName:true}
 };function preferences(){try{return JSON.parse(localStorage.getItem(PREF_KEY)||'{}')}catch{return {}}}
 function hexRgb(hex){const h=String(hex||'').replace('#','');if(!/^[0-9a-f]{6}$/i.test(h))return {r:90,g:105,b:120};return {r:parseInt(h.slice(0,2),16),g:parseInt(h.slice(2,4),16),b:parseInt(h.slice(4,6),16)}}
