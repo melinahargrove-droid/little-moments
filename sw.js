@@ -1,5 +1,27 @@
-const CACHE='little-moments-v238';
+const CACHE='little-moments-v239';
 const ASSETS=['./','./index.html','./styles.css','./home-fit.css','./cover-fit.css','./moments-view.css','./display-print.css','./display-photo-fill-fix.css','./portfolio-view.css','./portfolio-print.css','./portfolio-print-fix.css','./make-it-yours-refine.css','./soft-botanical.css','./student-profile.css','./teacher-tools.css','./class-manager.css','./class-setup.css','./settings-view.css','./data-safety.css','./portfolio-theme-settings.css','./capture-choice.css','./capture-date.css','./app.js','./moments-view.js','./display-print.js','./portfolio-lazy-loader.js','./student-profile.js','./teacher-tools.js','./class-manager.js','./class-setup.js','./version-badge.js','./db.js','./atomic-restore.js','./auto-recovery.js','./data-safety.js','./storage-diagnostic.js','./recovery-inspector.js','./school-name-settings.js','./portfolio-theme-settings.js','./google-drive-test.js','./google-drive-backup.js','./emergency-mirror.js','./capture-choice.js','./capture-favorite.js','./profile-photo.js','./recent-photo-fix.js','./recent-preference.js','./preference-behavior.js','./year-rollover.js','./year-history.js','./route-cleanup.js','./manifest.webmanifest','./plain_polaroid.png','./early_eagle_polaroid.png','./Woodland_plaroid.png','./Colorfol_Classroom_polaroid.png','./make_it_yours_polaroid_base.png','./Soft_Botanical_Individual_Polaroid_Master.png','./Soft_Botanical_Portfolio_Cover_8.5x11_300dpi.png','./Soft_Botanical_Page_A_8.5x11_300dpi.png','./Soft_Botanical_Page_B_8.5x11_300dpi.png','./Soft_Botanical_Page_C_8.5x11_300dpi.png','./Soft_Botanical_Page_D_8.5x11_300dpi.png','./little_moments_icon.png','./lm%20background.png','./lm%20camera.png','./lm%20moments.png','./lm%20scrapbook.png','./assets/home-moments.svg','./assets/home-portfolio.svg','./assets/home-botanical.svg','./assets/home-empty-moments.svg'];
-self.addEventListener('install',event=>{self.skipWaiting();event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)));});
-self.addEventListener('activate',event=>event.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE&&key!=='little-moments-emergency-v1').map(key=>caches.delete(key)))),self.clients.claim()])));
-self.addEventListener('fetch',event=>{if(event.request.method!=='GET')return;const url=new URL(event.request.url);if(url.origin!==location.origin)return;const isNav=event.request.mode==='navigate'||event.request.destination==='document';if(isNav){event.respondWith(fetch(event.request,{cache:'no-store'}).then(r=>{const c=r.clone();caches.open(CACHE).then(x=>x.put('./index.html',c));return r}).catch(()=>caches.match('./index.html')));return}event.respondWith(fetch(event.request,{cache:'no-store'}).then(r=>{if(r.ok)caches.open(CACHE).then(c=>c.put(event.request,r.clone()));return r}).catch(()=>caches.match(event.request,{ignoreSearch:true})))});
+self.addEventListener('install',event=>{
+  self.skipWaiting();
+  event.waitUntil(caches.open(CACHE).then(cache=>Promise.allSettled(ASSETS.map(asset=>cache.add(asset)))));
+});
+self.addEventListener('activate',event=>event.waitUntil(Promise.all([
+  caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE&&key!=='little-moments-emergency-v1').map(key=>caches.delete(key)))),
+  self.clients.claim()
+])));
+self.addEventListener('fetch',event=>{
+  if(event.request.method!=='GET')return;
+  const url=new URL(event.request.url);
+  if(url.origin!==location.origin)return;
+  const isNav=event.request.mode==='navigate'||event.request.destination==='document';
+  if(isNav){
+    event.respondWith(fetch(event.request,{cache:'no-store'}).then(r=>{
+      if(r.ok)caches.open(CACHE).then(c=>c.put('./index.html',r.clone()));
+      return r;
+    }).catch(()=>caches.match('./index.html')));
+    return;
+  }
+  event.respondWith(fetch(event.request,{cache:'no-store'}).then(r=>{
+    if(r.ok)caches.open(CACHE).then(c=>c.put(event.request,r.clone()));
+    return r;
+  }).catch(()=>caches.match(event.request,{ignoreSearch:true})));
+});
