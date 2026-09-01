@@ -1,68 +1,70 @@
-// Little Moments unified navigation for app buttons + Android system Back.
+// Little Moments navigation coordinator — v2.35
 const app=document.querySelector('#app');
-let restoring=false;
-let lastDetected='home';
-const view=()=>history.state?.lmView||'home';
-
-function push(next,data={}){
-  if(restoring)return;
-  const state={lmView:next,...data};
-  if(view()===next) history.replaceState(state,'');
-  else history.pushState(state,'');
-}
-function replace(next,data={}){history.replaceState({lmView:next,...data},'')}
+let rendering=false;
 function detectView(){
-  if(app.querySelector('.settings-screen'))return {lmView:'settings'};
-  if(app.querySelector('.detail-screen'))return {lmView:'moment-detail',momentId:window.__lmDisplayMoment?.id||null};
-  if(app.querySelector('.moments-screen:not(.detail-screen):not(.edit-moment-screen)'))return {lmView:'moments'};
-  if(app.querySelector('#capture')&&app.querySelector('#moments'))return {lmView:'home'};
-  return null;
+  if(app.querySelector('.settings-screen')) return 'settings';
+  if(app.querySelector('.detail-screen')) return 'moment-detail';
+  if(app.querySelector('.moments-screen')) return 'moments';
+  return 'home';
+}
+function ensureState(view=detectView()){
+  if(!history.state?.lmView) history.replaceState({lmView:view},'');
+}
+function push(view,extra={}){
+  if(rendering) return;
+  const current=detectView();
+  if(history.state?.lmView!==current) history.replaceState({...(history.state||{}),lmView:current},'');
+  if(history.state?.lmView===view) return;
+  history.pushState({lmView:view,...extra},'');
 }
 async function render(state){
   const target=state?.lmView||'home';
-  restoring=true;
+  rendering=true;
   try{
     if(target==='settings') window.dispatchEvent(new Event('lm:open-settings'));
-    else if(target==='moments'&&typeof window.__lmOpenMoments==='function') await window.__lmOpenMoments();
-    else if(target==='moment-detail'&&window.__lmDisplayMoment?.id===state.momentId){
-      // A detail screen can be restored from the in-memory moment when available.
-      const mod=await import('./moments-view.js?v=234');
-      await mod.showDetail(window.__lmDisplayMoment,false,0,window.__lmOpenMoments);
-    }else if(typeof window.__lmHome==='function') await window.__lmHome();
-  }finally{
-    requestAnimationFrame(()=>{lastDetected=detectView()?.lmView||target;restoring=false});
-  }
+    else if(target==='moments') await window.__lmOpenMoments?.();
+    else if(target==='moment-detail'&&state?.momentId){
+      const {get,STORES}=await import('./db.js?v=235');
+      const {showDetail}=await import('./moments-view.js?v=235');
+      const moment=await get(STORES.moments,state.momentId);
+      if(moment) await showDetail(moment,false,0,window.__lmOpenMoments);
+      else await window.__lmOpenMoments?.();
+    }else await window.__lmHome?.();
+  }finally{rendering=false;}
 }
-function back(){
-  if(view()!=='home'&&history.length>1)history.back();
+function goBack(){
+  ensureState();
+  if(history.state?.lmView!=='home'&&history.length>1) history.back();
   else render({lmView:'home'});
 }
-
-if(!history.state?.lmView)replace('home');
-lastDetected=view();
+ensureState('home');
 window.__lmNavPush=push;
-window.__lmNavReplace=replace;
-window.__lmNavBack=back;
-window.__lmNavIsRestoring=()=>restoring;
+window.__lmNavBack=goBack;
+window.__lmNavIsRendering=()=>rendering;
 
-// Record screen changes no matter which module opened them.
-new MutationObserver(()=>{
-  if(restoring)return;
-  const detected=detectView();
-  if(!detected)return;
-  const key=detected.lmView;
-  if(key===lastDetected&&view()===key)return;
-  lastDetected=key;
-  push(key,detected.momentId?{momentId:detected.momentId}:{});
-}).observe(app,{childList:true,subtree:true});
-
-// Make visible Back buttons use the same history as Android's system Back.
 document.addEventListener('click',e=>{
-  const btn=e.target.closest('#settings-back,#moments-back,#detail-back');
-  if(!btn)return;
-  e.preventDefault();
-  e.stopImmediatePropagation();
-  back();
+  const settingsTrigger=e.target.closest('#settings,#teacher-tools,[data-open-settings]');
+  if(settingsTrigger){
+    const from=detectView();
+    if(from!=='settings') push('settings',{lmFrom:from});
+    return;
+  }
+  const momentsTrigger=e.target.closest('#moments,#see-all');
+  if(momentsTrigger){
+    if(detectView()!=='moments') push('moments');
+    return;
+  }
+  const detailTrigger=e.target.closest('[data-open-moment],.mini-polaroid[data-moment]');
+  if(detailTrigger){
+    const momentId=detailTrigger.dataset.openMoment||detailTrigger.dataset.moment;
+    if(momentId) push('moment-detail',{momentId});
+    return;
+  }
+  const back=e.target.closest('#settings-back,#moments-back,#detail-back');
+  if(back){
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    goBack();
+  }
 },true);
-
 window.addEventListener('popstate',e=>render(e.state));
