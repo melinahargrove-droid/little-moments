@@ -2,8 +2,17 @@
   "name":"Little Moments",
   "short_name":"Little Moments",
   "start_url":"./",
+  "scope":"./",
   "display":"standalone",
   "background_color":"#fbf7ee",
   "theme_color":"#fbf7ee",
-  "description":"A private classroom photo journal and multi-year student portfolio app."
+  "description":"A private classroom photo journal and multi-year student portfolio app.",
+  "icons":[
+    {
+      "src":"little_moments_icon.png",
+      "sizes":"1024x1024",
+      "type":"image/png",
+      "purpose":"any maskable"
+    }
+  ]
 }
