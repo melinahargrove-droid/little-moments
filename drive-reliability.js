@@ -27,7 +27,7 @@ function protectionStatus(){
   if(!d.connected)return{kind:'off',title:'Drive protection is not connected',detail:'Your classroom changes are only on this device.',button:'Connect Drive'};
   if(l.dirty&&!token)return{kind:'danger',title:'Changes are NOT backed up yet',detail:'Reconnect School Google Drive now so these changes are protected.',button:'Reconnect & Protect'};
   if(l.dirty&&token)return{kind:'working',title:'Protecting your latest changes…',detail:'Little Moments is sending the newest classroom copy to Drive.',button:null};
-  if(d.needsSessionReconnect&&!token)return{kind:'warn',title:'Drive protection needs reconnecting',detail:`Last confirmed Drive backup: ${when(d.lastBackupAt||l.lastProtectedAt)}`,button:'Reconnect Drive'};
+  if(!token)return{kind:'warn',title:'Drive protection is paused',detail:`Reconnect before adding new classroom data. Last confirmed backup: ${when(d.lastBackupAt||l.lastProtectedAt)}`,button:'Reconnect Drive'};
   return{kind:'ok',title:'Classroom protected ✓',detail:`Last Drive backup: ${when(d.lastBackupAt||l.lastProtectedAt)}`,button:null};
 }
 async function reconnectAndProtect(btn){
