@@ -1,9 +1,9 @@
 // One Little Teacher Cloud public browser configuration.
-// Fill these values after the shared Supabase project is created.
-// The publishable/anon key is designed for browser use; NEVER put a service-role key here.
+// The publishable key is intentionally safe for browser use with RLS.
+// NEVER put a Supabase secret/service-role key in this app.
 window.ONE_LITTLE_TEACHER_CLOUD = {
-  supabaseUrl: '',
-  supabasePublishableKey: '',
+  supabaseUrl: 'https://qdslvqfvfwduvpgugozg.supabase.co',
+  supabasePublishableKey: 'sb_publishable_jSLitt7V_zwK2_W3YqI0jg_0oV-QZbw',
   appNamespace: 'little-moments',
   storageBucket: 'one-little-teacher-backups',
 };
